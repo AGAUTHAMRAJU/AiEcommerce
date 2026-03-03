@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+    <a href="/" class="btn btn-secondary btn-sm mb-3">← Back</a>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+
+            <div class="card shadow">
+                <div class="card-body">
+
+                    <h4 class="text-center mb-3">Login</h4>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        {{ form.username }}
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="input-group">
+                        <label class="form-label">Password  
+
+                            {{ form.password }}
+                            <span class="input-text" onclick="togglePassword('id_password')">
+                                👁
+                            </span>
+                        </span>
+                    </label>
+                </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mt-1">
+                        Login
+                        </button>
+                    </form>
+
+                    <p class="text-center mt-3">
+                        Don't have account?
+                        <a href="/register/">Register</a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+function togglePassword(fieldId) {
+    const passwordField = document.getElementById(fieldId);
+
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+    } else {
+        passwordField.type = "password";
+    }
+}
+</script>
+</body>
+</html>

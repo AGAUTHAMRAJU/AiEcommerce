@@ -1,0 +1,48 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<h3>Your Cart</h3>
+
+{% if cart_items %}
+<form method="post">
+    {% csrf_token %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>
+                    <button name="decrease" value="{{ item.id }}" class="btn btn-sm btn-danger">-</button>
+                    {{ item.quantity }}
+                    <button name="increase" value="{{ item.id }}" class="btn btn-sm btn-success">+</button>
+                </td>
+                <td>₹{{ item.product.price }}</td>
+                <td>
+                    <button name="remove" value="{{ item.id }}" class="btn btn-sm btn-danger">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h5>Total: ₹{{ total }}</h5>
+
+    <a href="/payment/" class="btn btn-success">Proceed to Checkout</a>
+
+</form>
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %}
+
+{% endblock %}

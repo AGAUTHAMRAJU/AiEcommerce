@@ -1,0 +1,40 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+<h3>Checkout (Cash on Delivery)</h3>
+
+{% if message %}
+<div class="alert alert-warning">{{ message }}</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Select Coupon</label>
+    <select name="coupon_code" class="form-select mb-3">
+        <option value="">-- Select --</option>
+        {% for coupon in coupons %}
+        <option value="{{ coupon.code }}">
+            {{ coupon.code }} ({{ coupon.discount_percentage }}%)
+        </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" name="apply_coupon" class="btn btn-outline-primary mb-3">
+        Apply Coupon
+    </button>
+
+    <hr>
+
+    <p>Subtotal: ₹{{ subtotal }}</p>
+    {% if discount %}
+    <p class="text-success">Discount: -₹{{ discount }}</p>
+    {% endif %}
+    <h5>Total: ₹{{ total }}</h5>
+
+    <button type="submit" name="pay_now" class="btn btn-success">
+        Confirm Order (COD)
+    </button>
+</form>
+
+{% endblock %}

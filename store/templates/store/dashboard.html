@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Analytics Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+.card {
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.9);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+</style>
+</head>
+<body style="background: linear-gradient(135deg, #1e3c72, #2a5298); min-height:100vh;">
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">GM Store Admin</a>
+        <a href="/" class="btn btn-outline-light btn-sm">Home</a>
+    </div>
+    <button class="btn btn-outline-light btn-sm ms-2" onclick="toggleDark()">
+    🌙
+</button>
+</nav>
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Analytics Dashboard</h2>
+
+    <!-- 🔹 STATS CARDS -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white p-3 shadow">
+                <h6>Total Users</h6>
+                <h3>{{ total_users }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-success text-white p-3 shadow">
+                <h6>Total Products</h6>
+                <h3>{{ total_products }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark p-3 shadow">
+                <h6>Total Orders</h6>
+                <h3>{{ total_orders }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card bg-danger text-white p-3 shadow">
+                <h6>Total Interactions</h6>
+                <h3>{{ total_interactions }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔹 REVENUE -->
+    <div class="card shadow mb-4 p-3">
+        <h5>Total Revenue</h5>
+        <h2 class="text-success">₹ {{ total_revenue }}</h2>
+    </div>
+
+    <!-- 🔹 TOP PRODUCTS -->
+    <div class="card shadow p-3">
+        <h5>Top 5 Most Purchased Products</h5>
+
+        <ul class="list-group mt-3">
+            {% for product in top_products %}
+                <li class="list-group-item d-flex justify-content-between">
+                    {{ product.name }}
+                    <span class="badge bg-success">
+                        {{ product.purchase_count }} Purchases
+                    </span>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No purchases yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- 🔹 MONTHLY REVENUE CHART -->
+<div class="card shadow mt-4 p-3">
+    <h5>Monthly Revenue</h5>
+    <canvas id="revenueChart"></canvas>
+</div>
+
+<!-- 🔹 USER ACTIVITY CHART -->
+<div class="card shadow mt-4 p-3">
+    <h5>Monthly User Activity</h5>
+    <canvas id="activityChart"></canvas>
+</div>
+
+</div>
+
+
+<script>
+const revenueCtx = document.getElementById('revenueChart');
+
+new Chart(revenueCtx, {
+    type: 'bar',
+    data: {
+        labels: {{ revenue_labels|safe }},
+        datasets: [{
+            label: 'Revenue (₹)',
+            data: {{ revenue_data|safe }},
+            backgroundColor: 'rgba(40, 167, 69, 0.7)'
+        }]
+    }
+});
+
+const activityCtx = document.getElementById('activityChart');
+
+new Chart(activityCtx, {
+    type: 'line',
+    data: {
+        labels: {{ activity_labels|safe }},
+        datasets: [{
+            label: 'User Interactions',
+            data: {{ activity_data|safe }},
+            borderColor: 'rgba(0, 123, 255, 0.8)',
+            fill: false,
+            tension: 0.3
+        }]
+    }
+});
+</script>
+<script>
+function toggleDark() {
+    document.body.classList.toggle("dark-mode");
+}
+
+</script>
+
+<style>
+.dark-mode {
+    background: #121212 !important;
+}
+
+.dark-mode .card {
+    background: #1e1e1e !important;
+    color: white;
+}
+</style>
+
+</body>
+</html>
