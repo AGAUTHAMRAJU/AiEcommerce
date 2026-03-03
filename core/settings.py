@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -89,8 +90,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
+
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3'
+    )
 }
 
 CSRF_TRUSTED_ORIGINS = [
