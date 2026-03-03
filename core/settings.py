@@ -98,7 +98,7 @@ DATABASES = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://aiecommerce-dlwq.onrender.com/'
+    'https://aiecommerce-dlwq.onrender.com'
 ]
 
 
